@@ -5,6 +5,9 @@ import { SiLevelsdotfyi } from "react-icons/si";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import DropdownOption from './DropdownOption';
 import Link from 'next/link';
+import { db } from '@/configs/db';
+import { CourseList } from '@/configs/schema';
+import { eq } from 'drizzle-orm';
 
 function CourseCard({ course, refreshData, displayUser = false }) {
     const handleOnDelete = async () => {
@@ -37,7 +40,7 @@ function CourseCard({ course, refreshData, displayUser = false }) {
                     <h2 className='text-primary font-medium text-lg line-clamp-1'>{course?.courseOutput?.CourseName}</h2>
                     {!displayUser && (
                         <DropdownOption handleOnDelete={handleOnDelete}>
-                            <FaEllipsisVertical className="flex-shrink-0" />
+                            <FaEllipsisVertical className="flex-shrink-0 text-indigo-500" />
                         </DropdownOption>
                     )}
                 </div>
