@@ -4,6 +4,7 @@ import { db } from '@/configs/db'
 import { Chapters, CourseList } from '@/configs/schema'
 import { and, eq } from 'drizzle-orm'
 import React, { useEffect, useState } from 'react'
+import { Menu } from 'lucide-react' // Importing burger menu icon
 import ChapterListCard from './_components/ChapterListCard'
 import ChapterContent from './_components/ChapterContent'
 
@@ -11,6 +12,7 @@ function CourseStart({ params }) {
     const [course, setCourse] = useState()
     const [selectedChapter, setSelectedChapter] = useState()
     const [chapterContent, setChapterContent] = useState()
+    const [isMenuOpen, setIsMenuOpen] = useState(false) // State for mobile menu toggle
 
     useEffect(() => {
         GetCourse()
@@ -19,7 +21,6 @@ function CourseStart({ params }) {
     const GetCourse = async () => {
         const result = await db.select().from(CourseList)
             .where(eq(CourseList?.courseId, params?.courseId))
-        console.log(result)
         setCourse(result[0])
         GetSelectedChapterContent(0)
     }
@@ -28,32 +29,40 @@ function CourseStart({ params }) {
         const result = await db.select().from(Chapters)
             .where(and(eq(Chapters.chapterId, chapterId),
                 eq(Chapters.courseId, course?.courseId)))
-
-        console.log("CONTENT:", result)
         setChapterContent(result[0])
     }
 
     return (
         <div className="">
-            {/* Mobile Chapter Navigation */}
-            <div className='md:hidden w-full overflow-x-auto bg-gradient-to-r from-purple-900 via-indigo-800 to-indigo-900 p-4'>
-                <div className='flex gap-2 min-w-max'>
-                    {course?.courseOutput?.Chapters.map((chapter, index) => (
-                        <button
-                            key={index}
-                            onClick={() => {
-                                setSelectedChapter(chapter)
-                                GetSelectedChapterContent(index)
-                            }}
-                            className={`px-4 py-2 rounded-full text-sm whitespace-nowrap
-                                ${selectedChapter?.ChapterName === chapter?.ChapterName
-                                    ? 'bg-indigo-700 text-white'
-                                    : 'bg-indigo-900/50 text-white/80'}`}
-                        >
-                            Chapter {index + 1}
-                        </button>
-                    ))}
-                </div>
+            {/* Mobile Chapter Navigation - Burger Menu */}
+            <div className='md:hidden w-full bg-gradient-to-r from-purple-900 via-indigo-800 to-indigo-900 p-4'>
+                <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="flex items-center gap-2 text-white bg-indigo-700 px-4 py-2 rounded-md"
+                >
+                    <Menu size={20} /> Chapters
+                </button>
+
+                {isMenuOpen && (
+                    <div className="mt-2 bg-indigo-900 p-3 rounded-md">
+                        {course?.courseOutput?.Chapters.map((chapter, index) => (
+                            <button
+                                key={index}
+                                onClick={() => {
+                                    setSelectedChapter(chapter)
+                                    GetSelectedChapterContent(index)
+                                    setIsMenuOpen(false) // Close menu on selection
+                                }}
+                                className={`block w-full text-left px-4 py-2 rounded-md text-sm
+                                    ${selectedChapter?.ChapterName === chapter?.ChapterName
+                                        ? 'bg-indigo-700 text-white'
+                                        : 'bg-indigo-900/50 text-white/80'}`}
+                            >
+                                Chapter {index + 1}: {chapter.ChapterName}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Desktop Chapter List Side Bar */}
