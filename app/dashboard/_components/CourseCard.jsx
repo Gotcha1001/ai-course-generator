@@ -20,13 +20,16 @@ function CourseCard({ course, refreshData, displayUser = false }) {
     return (
         <div className='rounded-lg shadow-neon border-2 border-teal-500 p-2 hover:shadow-teal cursor-pointer'>
             <Link href={'/course/' + course?.courseId}>
-                <Image
-                    src={course?.courseBanner}
-                    alt='course'
-                    width={300}
-                    height={300}
-                    className='w-full h-[200px] object-cover rounded-lg'
-                />
+                <div className='relative w-full h-64  mt-3'>
+                    <Image
+                        src={course?.courseBanner}
+                        alt='course'
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className='object-contain rounded-lg'
+                        priority
+                    />
+                </div>
             </Link>
             <div className='p-2'>
                 {/* Title and Options */}
