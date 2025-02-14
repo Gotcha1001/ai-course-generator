@@ -33,7 +33,10 @@ function ChapterContent({ chapter, content }) {
 
                 <div>
                     {content?.content?.chapters.map((item, index) => (
-                        <div key={index} className='p-5 bg-slate-50 mb-3 rounded-lg'>
+                        <div
+                            key={index}
+                            className='p-5 bg-slate-50 mb-3 rounded-lg'
+                        >
                             <h2 className='text-purple-500 font-medium text-lg'>{item.title}</h2>
                             <ReactMarkdown>{item?.description}</ReactMarkdown>
 

@@ -22,7 +22,7 @@ const Menu = [
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const path = usePathname();
-    // const { userCourseList } = useContext(UserCourseListContext);
+    const { userCourseList } = useContext(UserCourseListContext);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -82,13 +82,13 @@ function Header() {
                     ))}
                 </ul>
                 {/* Course Progress Section */}
-                {/* <div className="mt-10">
+                <div className="mt-10">
                     <Progress value={((userCourseList?.length || 0) / 5) * 100} />
                     <h2 className="text-yellow-300 text-sm my-2">{userCourseList?.length || 0} Out Of 5 Courses Created</h2>
                     <Link href={'/dashboard/upgrade'}>
                         <h2 className="text-yellow-300 text-xs my-2 text-center border border-indigo-500 rounded-lg p-1">Upgrade Your Plan For Unlimited Course Creations</h2>
                     </Link>
-                </div> */}
+                </div>
             </div>
         </div>
     );
