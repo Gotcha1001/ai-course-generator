@@ -34,7 +34,7 @@ function FinishScreen({ params }) {
 
     if (!course) return <p>Loading...</p>;
 
-    const courseUrl = `${process.env.NEXT_PUBLIC_HOST_NAME}/course-copy/view/${course.courseId}`;
+    const courseUrl = `${process.env.NEXT_PUBLIC_URL}/course-copy/view/${course.courseId}`;
 
     return (
         <div className='px-10 md:px-20 lg:px-44 my-7'>
