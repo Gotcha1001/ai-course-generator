@@ -75,16 +75,38 @@ function Header() {
                 />
             </Link>
 
-            {/* Desktop Menu */}
+            {/* Desktop Menu - Home and Credits */}
             <div className="hidden md:flex items-center gap-6">
-                {Menu.map((item) => (
-                    <Link key={item.id} href={item.path}>
-                        <div className={`flex items-center gap-2 text-white p-2 rounded-lg hover:bg-indigo-700 transition-all ${item.path === path ? "bg-indigo-600" : ""}`}>
-                            <span className="text-xl">{item.icon}</span>
-                            <span>{item.name}</span>
+                <Link href="/dashboard">
+                    <div className={`flex items-center gap-2 text-white p-2 rounded-lg hover:bg-indigo-700 transition-all ${"/dashboard" === path ? "gradient-background2 border border-teal-500" : ""}`}>
+                        <span className="text-xl"><IoIosHome /></span>
+                        <span>Home</span>
+                    </div>
+                </Link>
+
+                {/* Desktop Credits Display */}
+                <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                        <Image
+                            src="/coin.png"
+                            alt="token"
+                            width={40}
+                            height={40}
+                            className="animate-pulse"
+                        />
+                        <div>
+                            <p className="text-yellow-300 text-sm">
+                                Credits: {userCredits}
+                            </p>
+                            <Link href="/dashboard/upgrade">
+                                <p className="text-xs text-yellow-300 hover:text-yellow-400 transition-all">
+                                    Upgrade Plan
+                                </p>
+                            </Link>
                         </div>
-                    </Link>
-                ))}
+                    </div>
+                </div>
+
                 <UserButton appearance={{ elements: { avatarBox: "w-16 h-16" } }} />
             </div>
 
@@ -100,7 +122,7 @@ function Header() {
                 </button>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu - All Links */}
             <div className={`fixed top-0 right-0 w-2/3 h-full bg-indigo-900 text-white p-6 z-50 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} transition-transform duration-300 md:hidden`}>
                 <button onClick={toggleMenu} className="absolute top-5 right-5 text-3xl">✖</button>
                 <ul className="mt-10 space-y-4">
@@ -140,7 +162,6 @@ function Header() {
                         </h2>
                     </Link>
                 </div>
-
             </div>
         </div>
     );

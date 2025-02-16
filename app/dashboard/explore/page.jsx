@@ -8,12 +8,16 @@ import CourseCard from '../_components/CourseCard'
 import { Button } from '@/components/ui/button'
 
 function Explore() {
-
     const [courseList, setCourseList] = useState([])
     const [pageIndex, setPageIndex] = useState(0)
 
     useEffect(() => {
         GetAllCourse()
+        // Scroll to top whenever pageIndex changes
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
     }, [pageIndex])
 
     const GetAllCourse = async () => {
@@ -24,8 +28,12 @@ function Explore() {
         setCourseList(result)
     }
 
+    const handlePageChange = (newIndex) => {
+        setPageIndex(newIndex)
+    }
+
     return (
-        <div >
+        <div>
             <h2 className='font-bold text-3xl gradient-title text-center'>Explore More Projects</h2>
             <p className='text-center text-indigo-500'>Explore other projects build by AI created by other Users</p>
             <div className='grid grid-cols-2 lg:grid-cols-3 gap-5'>
@@ -38,15 +46,22 @@ function Explore() {
                 ))}
             </div>
             <div className='flex justify-between mt-5'>
-                {pageIndex != 0 && <Button
-                    onClick={() => setPageIndex(pageIndex - 1)}
-                    variant="sex1">Previous Page</Button>}
+                {pageIndex != 0 && (
+                    <Button
+                        onClick={() => handlePageChange(pageIndex - 1)}
+                        variant="sex1"
+                    >
+                        Previous Page
+                    </Button>
+                )}
 
                 <Button
-                    onClick={() => setPageIndex(pageIndex + 1)}
-                    variant="sex1">Next Page</Button>
+                    onClick={() => handlePageChange(pageIndex + 1)}
+                    variant="sex1"
+                >
+                    Next Page
+                </Button>
             </div>
-
         </div>
     )
 }

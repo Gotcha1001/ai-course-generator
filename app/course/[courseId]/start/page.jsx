@@ -58,7 +58,7 @@ function CourseStart({ params }) {
                         <Menu size={20} /> Chapters
                     </button>
                     <Button
-                        variant="outline"
+                        variant="sex1"
                         size="icon"
                         onClick={handleCopyUrl}
                         className="bg-indigo-700 text-white"
@@ -96,10 +96,10 @@ function CourseStart({ params }) {
                         {course?.courseOutput?.CourseName}
                     </h2>
                     <Button
-                        variant="outline"
+                        variant="sex1"
                         size="icon"
                         onClick={handleCopyUrl}
-                        className="bg-indigo-700 text-white"
+                        className="bg-indigo-700 text-white rounded-lg p-3"
                     >
                         <Share2 className="h-4 w-4" />
                     </Button>
