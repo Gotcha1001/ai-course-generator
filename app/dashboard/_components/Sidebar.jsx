@@ -9,6 +9,7 @@ import Link from 'next/link';
 import FeatureMotionWrapper from '@/app/_components/FramerMotionStuff/FeatureMotionWrapperMap';
 import { UserCourseListContext } from '@/app/_context/UserCourseListContext';
 import { useUser } from '@clerk/nextjs';
+import MotionWrapperDelay from '@/app/_components/FramerMotionStuff/MotionWrapperDelay';
 
 function Sidebar() {
     const path = usePathname()
@@ -109,9 +110,19 @@ function Sidebar() {
                             className="animate-pulse"
                         />
                     </div>
-                    <p className="text-yellow-300 border border-purple-500 rounded-lg p-2 my-2 text-lg shadow-neon text-center">
-                        Available Credits: {userCredits}
-                    </p>
+                    <MotionWrapperDelay
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        variants={{
+                            hidden: { opacity: 0, x: -100 },
+                            visible: { opacity: 1, x: 0 },
+                        }}
+                    >  <p className="text-yellow-300 border border-purple-500 rounded-lg p-2 my-2 text-lg shadow-neon text-center">
+                            Available Credits: {userCredits}
+                        </p> </MotionWrapperDelay>
+
 
                 </div>
                 <h2 className='text-yellow-300 text-xs text-center'>
@@ -120,7 +131,17 @@ function Sidebar() {
                 <Link href={'/dashboard/upgrade'} className="w-full">
 
                 </Link>
-                <h2 className='text-yellow-300 text-sm p-2 my-2 text-center border border-purple-500 shadow-neon rounded-lg'>{createdCourses} <span className='text--500'>Courses Created</span> </h2>
+                <MotionWrapperDelay
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    variants={{
+                        hidden: { opacity: 0, x: 100 },
+                        visible: { opacity: 1, x: 0 },
+                    }}
+                > <h2 className='text-yellow-300 text-sm p-2 my-2 text-center border border-purple-500 shadow-neon rounded-lg'>{createdCourses} <span className='text--500'>Courses Created</span> </h2></MotionWrapperDelay>
+
                 <h2 className='text-indigo-500 text-xs my-2 text-center border border-indigo-500 rounded-lg p-1 hover:scale-105 transition-all mt-10 cursor-pointer'>
                     Upgrade Your Plan For Unlimited Course Creations
                 </h2>

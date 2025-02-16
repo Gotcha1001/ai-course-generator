@@ -10,6 +10,7 @@ import { ClipboardCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import MotionWrapperDelay from '@/app/_components/FramerMotionStuff/MotionWrapperDelay';
 
 const ShareScreen = ({ params }) => {
     const { user } = useUser();
@@ -68,12 +69,32 @@ const ShareScreen = ({ params }) => {
         <div className="container mx-auto px-4 py-4 max-w-4xl">
             <Card className="gradient-background2">
                 <CardHeader>
-                    <CardTitle className="text-4xl text-center gradient-title">
-                        Congratulations! Your Course Is Ready to Share
-                    </CardTitle>
+                    <MotionWrapperDelay
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        variants={{
+                            hidden: { opacity: 0, x: -100 },
+                            visible: { opacity: 1, x: 0 },
+                        }}
+                    >  <CardTitle className="text-4xl text-center gradient-title">
+                            Congratulations! Your Course Is Ready to Share
+                        </CardTitle> </MotionWrapperDelay>
+
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    <CourseBasicInfo course={course} />
+                    <MotionWrapperDelay
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        variants={{
+                            hidden: { opacity: 0, y: -100 },
+                            visible: { opacity: 1, y: 0 },
+                        }}
+                    ><CourseBasicInfo course={course} /> </MotionWrapperDelay>
+
 
                     <Alert>
                         <AlertDescription className="flex items-center justify-between">
@@ -90,34 +111,72 @@ const ShareScreen = ({ params }) => {
                     </Alert>
 
                     <div className="flex flex-wrap justify-center gap-4">
-                        <Button
+                        <MotionWrapperDelay
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                            variants={{
+                                hidden: { opacity: 0, x: -100 },
+                                visible: { opacity: 1, x: 0 },
+                            }}
+                        >      <Button
                             variant="outline"
                             className="bg-blue-600 hover:bg-blue-700 text-white"
                             onClick={() => handleShare('facebook')}
                         >
-                            Share on Facebook
-                        </Button>
-                        <Button
+                                Share on Facebook
+                            </Button></MotionWrapperDelay>
+                        <MotionWrapperDelay
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                            variants={{
+                                hidden: { opacity: 0, y: 100 },
+                                visible: { opacity: 1, y: 0 },
+                            }}
+                        >    <Button
                             variant="outline"
                             className="bg-sky-500 hover:bg-sky-600 text-white"
                             onClick={() => handleShare('twitter')}
                         >
-                            Share on Twitter
-                        </Button>
-                        <Button
+                                Share on Twitter
+                            </Button> </MotionWrapperDelay>
+
+                        <MotionWrapperDelay
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                            variants={{
+                                hidden: { opacity: 0, y: -100 },
+                                visible: { opacity: 1, y: 0 },
+                            }}
+                        >      <Button
                             variant="outline"
                             className="bg-blue-700 hover:bg-blue-800 text-white"
                             onClick={() => handleShare('linkedin')}
                         >
-                            Share on LinkedIn
-                        </Button>
-                        <Button
+                                Share on LinkedIn
+                            </Button></MotionWrapperDelay>
+                        <MotionWrapperDelay
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 0.7, delay: 0.8 }}
+                            variants={{
+                                hidden: { opacity: 0, y: -100 },
+                                visible: { opacity: 1, y: 0 },
+                            }}
+                        >    <Button
                             variant="outline"
                             className="bg-green-500 hover:bg-green-600 text-white"
                             onClick={() => handleShare('whatsapp')}
                         >
-                            Share on WhatsApp
-                        </Button>
+                                Share on WhatsApp
+                            </Button> </MotionWrapperDelay>
+
                     </div>
 
                     <div className="text-center text-sm text-gray-500 mt-4">

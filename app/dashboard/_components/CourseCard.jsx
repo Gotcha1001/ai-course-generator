@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { db } from '@/configs/db';
 import { CourseList } from '@/configs/schema';
 import { eq } from 'drizzle-orm';
+import MotionWrapperDelay from '@/app/_components/FramerMotionStuff/MotionWrapperDelay';
 
 function CourseCard({ course, refreshData, displayUser = false }) {
     const handleOnDelete = async () => {
@@ -24,6 +25,7 @@ function CourseCard({ course, refreshData, displayUser = false }) {
         <div className='rounded-lg shadow-neon border-2 border-teal-500 p-2 hover:shadow-teal cursor-pointer'>
             <Link href={'/course/' + course?.courseId}>
                 <div className='relative w-full h-64  mt-3'>
+
                     <Image
                         src={course?.courseBanner}
                         alt='course'
@@ -37,7 +39,17 @@ function CourseCard({ course, refreshData, displayUser = false }) {
             <div className='p-2'>
                 {/* Title and Options */}
                 <div className='flex justify-between items-center'>
-                    <h2 className='text-primary font-medium text-lg line-clamp-1'>{course?.courseOutput?.CourseName}</h2>
+                    <MotionWrapperDelay
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        variants={{
+                            hidden: { opacity: 0, x: -100 },
+                            visible: { opacity: 1, x: 0 },
+                        }}
+                    >  <h2 className='text-primary font-medium text-lg line-clamp-1'>{course?.courseOutput?.CourseName}</h2></MotionWrapperDelay>
+
                     {!displayUser && (
                         <DropdownOption handleOnDelete={handleOnDelete}>
                             <FaEllipsisVertical className="flex-shrink-0 text-indigo-500" />
@@ -50,6 +62,7 @@ function CourseCard({ course, refreshData, displayUser = false }) {
 
                 {/* Chapters and Level */}
                 <div className='flex flex-wrap gap-2 items-center'>
+
                     <h2 className='text-indigo-300 flex text-xs md:text-sm gap-1 items-center p-2 rounded-lg gradient-background2 whitespace-nowrap'>
                         <GiGraduateCap className="flex-shrink-0" />
                         <span>{course?.courseOutput?.NoOfChapters} Chapters</span>

@@ -18,6 +18,7 @@ import { CourseList } from "@/configs/schema";
 import uuid4 from "uuid4";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import MotionWrapperDelay from "../_components/FramerMotionStuff/MotionWrapperDelay";
 
 function CreateCourse() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -154,7 +155,17 @@ function CreateCourse() {
     <div className="text-white">
       {/* STEPPER */}
       <div className="flex flex-col justify-center items-center mt-10">
-        <h2 className="text-4xl text-primary font-medium">Create Course</h2>
+        <MotionWrapperDelay
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          variants={{
+            hidden: { opacity: 0, x: -100 },
+            visible: { opacity: 1, x: 0 },
+          }}
+        >   <h2 className="text-4xl text-primary font-medium">Create Course</h2></MotionWrapperDelay>
+
         <div className="flex mt-10">
           {StepperOptions.map((item, index) => (
             <FeatureMotionWrapper key={item.id} index={index}>

@@ -2,6 +2,7 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { shadesOfPurple } from "@clerk/themes";
+import MotionWrapperDelay from "./_components/FramerMotionStuff/MotionWrapperDelay";
 
 const outfit = Outfit({ subsets: ["latin"] })
 
@@ -38,11 +39,21 @@ export default function RootLayout({ children }) {
         <body className={`${outfit.className} flex flex-col min-h-screen`}>
           <div className="animated-bg" />
           <main className="flex-1">{children}</main> {/* Pushes footer down */}
-          <footer className="bg-indigo-300 py-10 bg-opacity-10 gradient-background2 p-10">
-            <div className="mx-auto px-4 text-center text-gray-200">
-              <p>© {new Date().getFullYear()} CodeNow101. All Rights Reserved</p>
-            </div>
-          </footer>
+          <MotionWrapperDelay
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.9, delay: 0.8 }}
+            variants={{
+              hidden: { opacity: 0, x: -100 },
+              visible: { opacity: 1, x: 0 },
+            }}
+          >    <footer className="bg-indigo-300 py-10 bg-opacity-10 gradient-background2 p-10">
+              <div className="mx-auto px-4 text-center text-gray-200">
+                <p>© {new Date().getFullYear()} CodeNow101. All Rights Reserved</p>
+              </div>
+            </footer></MotionWrapperDelay>
+
         </body>
       </html>
     </ClerkProvider>

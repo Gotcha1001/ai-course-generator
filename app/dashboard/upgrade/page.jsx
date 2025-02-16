@@ -1,6 +1,7 @@
 // upgrade/page.jsx
 "use client";
 
+import FeatureMotionWrapper from "@/app/_components/FramerMotionStuff/FeatureMotionWrapperMap";
 import { CreditContext } from "@/app/_context/CreditContext";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -80,27 +81,32 @@ function BuyCredits() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5 mt-10">
                 {creditsOption.map((item, index) => (
-                    <div
-                        key={index}
-                        className={`flex flex-col gap-2 justify-center items-center ${selectedOption?.credits === item.credits
-                            ? "border-2 border-indigo-600 p-1 rounded-lg"
-                            : ""
-                            }`}
-                    >
-                        <h2 className="font-bold text-3xl text-yellow-500">
-                            {item.credits}
-                        </h2>
-                        <h2 className="font-medium text-xl text-white">Credits</h2>
-                        <Button
-                            className="w-full"
-                            onClick={() => setSelectedOption(item)}
+                    <FeatureMotionWrapper index={index} key={index}>
+
+                        <div
+
+                            className={`flex flex-col gap-2 justify-center items-center ${selectedOption?.credits === item.credits
+                                ? "border-2 border-indigo-600 p-1 rounded-lg"
+                                : ""
+                                }`}
                         >
-                            Select
-                        </Button>
-                        <h2 className="font-bold text-yellow-500 mb-4">
-                            R{item.amount}
-                        </h2>
-                    </div>
+                            <h2 className="font-bold text-3xl text-yellow-500">
+                                {item.credits}
+                            </h2>
+                            <h2 className="font-medium text-xl text-white">Credits</h2>
+                            <Button
+                                className="w-full"
+                                onClick={() => setSelectedOption(item)}
+                            >
+                                Select
+                            </Button>
+                            <h2 className="font-bold text-yellow-500 mb-4">
+                                R{item.amount}
+                            </h2>
+                        </div>
+
+                    </FeatureMotionWrapper>
+
                 ))}
             </div>
 

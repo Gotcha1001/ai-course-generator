@@ -12,6 +12,7 @@ import { GenerateChaperContent_AI } from '@/configs/AiModel'
 import LoadingDialog from '../_components/LoadingDialog'
 import service from '@/configs/service'
 import { useRouter } from 'next/navigation'
+import MotionWrapperDelay from '@/app/_components/FramerMotionStuff/MotionWrapperDelay'
 
 
 function CourseLayout({ params }) {
@@ -77,10 +78,30 @@ function CourseLayout({ params }) {
 
     return (
         <div className='mt-10 px-7 md:px-20 lg:px-44'>
-            <h2 className='font-bold text-center text-5xl gradient-title'>Course Layout</h2>
+            <MotionWrapperDelay
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                variants={{
+                    hidden: { opacity: 0, x: -100 },
+                    visible: { opacity: 1, x: 0 },
+                }}
+            >  <h2 className='font-bold text-center text-5xl gradient-title'>Course Layout</h2></MotionWrapperDelay>
+
             {/* Basic INFO */}
             <LoadingDialog loading={loading} />
-            <CourseBasicInfo course={course} refreshData={() => GetCourse()} />
+            <MotionWrapperDelay
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                variants={{
+                    hidden: { opacity: 0, x: -100 },
+                    visible: { opacity: 1, x: 0 },
+                }}
+            >   <CourseBasicInfo course={course} refreshData={() => GetCourse()} /> </MotionWrapperDelay>
+
             {/* Course Detail Duration etc.. */}
             <CourseDetail course={course} />
             {/* List of Lessons Chapters */}

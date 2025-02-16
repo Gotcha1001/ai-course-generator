@@ -95,7 +95,7 @@ function Header() {
                             className="animate-pulse"
                         />
                         <div>
-                            <p className="text-yellow-300 text-sm">
+                            <p className="text-yellow-300 text-lg">
                                 Credits: {userCredits}
                             </p>
                             <Link href="/dashboard/upgrade">

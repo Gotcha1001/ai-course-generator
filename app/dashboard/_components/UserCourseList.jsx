@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import CourseCard from './CourseCard'
 import { UserCourseListContext } from '@/app/_context/UserCourseListContext'
 import FeatureMotionWrapper from '@/app/_components/FramerMotionStuff/FeatureMotionWrapperMap'
+import MotionWrapperDelay from '@/app/_components/FramerMotionStuff/MotionWrapperDelay'
 
 function UserCourseList() {
 
@@ -30,11 +31,22 @@ function UserCourseList() {
 
     return (
         <div className='mt-10'>
-            <h2 className='font-bold text-5xl text-primary mb-10 text-center'>My AI Courses</h2>
+            <MotionWrapperDelay
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                variants={{
+                    hidden: { opacity: 0, x: -100 },
+                    visible: { opacity: 1, x: 0 },
+                }}
+            > <h2 className='font-bold text-5xl text-primary mb-10 text-center'>My AI Courses</h2></MotionWrapperDelay>
+
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
                 {courseList?.length > 0 ? (
                     courseList?.map((course, index) => (
-                        <CourseCard course={course} key={index} refreshData={() => getUserCourses()} />
+                        <FeatureMotionWrapper index={index} key={index}>
+                            <CourseCard course={course} key={index} refreshData={() => getUserCourses()} /></FeatureMotionWrapper>
                     ))
                 ) : (
                     [1, 2, 3, 4, 5].map((Item, index) => (

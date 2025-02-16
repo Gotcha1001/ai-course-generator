@@ -22,10 +22,20 @@ function Hero() {
                             <Image className='horizontal-rotate rounded-lg' src={'/hero.jpg'} alt='hero' height={100} width={100} />
                         </div>
                     </MotionWrapperDelay>
-                    <h1 className="text-3xl font-extrabold sm:text-5xl text-primary">
-                        AI Course Generator
-                        <strong className="font-extrabold text-black  sm:block"> Custom Learning Path Custom By AI  </strong>
-                    </h1>
+                    <MotionWrapperDelay
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 0.9, delay: 0.8 }}
+                        variants={{
+                            hidden: { opacity: 0, y: 100 },
+                            visible: { opacity: 1, y: 0 },
+                        }}
+                    >    <h1 className="text-3xl font-extrabold sm:text-5xl text-primary">
+                            AI Course Generator
+                            <strong className="font-extrabold text-black  sm:block"> Custom Learning Path Custom By AI  </strong>
+                        </h1></MotionWrapperDelay>
+
 
 
                     <p className="mt-4 sm:text-xl/relaxed">
