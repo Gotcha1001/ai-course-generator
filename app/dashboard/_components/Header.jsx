@@ -92,10 +92,10 @@ function Header() {
                             alt="token"
                             width={40}
                             height={40}
-                            className="animate-pulse"
+                            className="horizontal-rotate"
                         />
                         <div>
-                            <p className="text-yellow-300 text-lg">
+                            <p className="text-yellow-300 text-lg font-bold">
                                 Credits: {userCredits}
                             </p>
                             <Link href="/dashboard/upgrade">

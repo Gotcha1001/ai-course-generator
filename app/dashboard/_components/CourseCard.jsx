@@ -38,7 +38,7 @@ function CourseCard({ course, refreshData, displayUser = false }) {
             </Link>
             <div className='p-2'>
                 {/* Title and Options */}
-                <div className='flex justify-between items-center gradient-background2 border border-teal-500 rounded-lg p-2'>
+                <div className='flex justify-between items-center gradient-background2 border p-1 border-teal-500 rounded-lg '>
                     <MotionWrapperDelay
                         initial="hidden"
                         whileInView="visible"
@@ -48,7 +48,7 @@ function CourseCard({ course, refreshData, displayUser = false }) {
                             hidden: { opacity: 0, x: -100 },
                             visible: { opacity: 1, x: 0 },
                         }}
-                    >  <h2 className='text-white font-bold text-lg line-clamp-1 p-2 rounded-lg '>{course?.courseOutput?.CourseName}</h2></MotionWrapperDelay>
+                    >  <h2 className='text-white font-bold text-lg line-clamp-1 p-1 rounded-lg '>{course?.courseOutput?.CourseName}</h2></MotionWrapperDelay>
 
                     {!displayUser && (
                         <DropdownOption handleOnDelete={handleOnDelete}>
