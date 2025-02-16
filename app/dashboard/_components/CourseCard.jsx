@@ -24,21 +24,21 @@ function CourseCard({ course, refreshData, displayUser = false }) {
     return (
         <div className='rounded-lg shadow-neon border-2 border-teal-500 p-2 hover:shadow-teal cursor-pointer'>
             <Link href={'/course/' + course?.courseId}>
-                <div className='relative w-full h-64  mt-3'>
+                <div className='relative w-full h-64  mt-3 mb-5'>
 
                     <Image
                         src={course?.courseBanner}
                         alt='course'
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className='object-contain rounded-lg'
+                        className='object-contain rounded-lg '
                         priority
                     />
                 </div>
             </Link>
             <div className='p-2'>
                 {/* Title and Options */}
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between items-center gradient-background2 border border-teal-500 rounded-lg p-2'>
                     <MotionWrapperDelay
                         initial="hidden"
                         whileInView="visible"
@@ -48,17 +48,17 @@ function CourseCard({ course, refreshData, displayUser = false }) {
                             hidden: { opacity: 0, x: -100 },
                             visible: { opacity: 1, x: 0 },
                         }}
-                    >  <h2 className='text-primary font-medium text-lg line-clamp-1'>{course?.courseOutput?.CourseName}</h2></MotionWrapperDelay>
+                    >  <h2 className='text-white font-bold text-lg line-clamp-1 p-2 rounded-lg '>{course?.courseOutput?.CourseName}</h2></MotionWrapperDelay>
 
                     {!displayUser && (
                         <DropdownOption handleOnDelete={handleOnDelete}>
-                            <FaEllipsisVertical className="flex-shrink-0 text-indigo-500" />
+                            <FaEllipsisVertical className="flex-shrink-0 h-5 w-5 text-teal-500" />
                         </DropdownOption>
                     )}
                 </div>
 
                 {/* Category */}
-                <p className='text-sm text-white my-1'>{course?.category}</p>
+                <p className='text-sm text-white  text-center my-3'>{course?.category}</p>
 
                 {/* Chapters and Level */}
                 <div className='flex flex-wrap gap-2 items-center'>
