@@ -11,12 +11,11 @@ import { UserCourseListContext } from '@/app/_context/UserCourseListContext';
 import { useUser } from '@clerk/nextjs';
 
 function Sidebar() {
-
     const path = usePathname()
     const { userCourseList } = useContext(UserCourseListContext)
-    const { user } = useUser() // Get user information
+    const { user } = useUser()
 
-    const [userCredits, setUserCredits] = useState(5); // Default fallback value
+    const [userCredits, setUserCredits] = useState(5);
 
     const Menu = [
         {
@@ -45,7 +44,6 @@ function Sidebar() {
         }
     ];
 
-    // Fetch credits when user is available
     useEffect(() => {
         const fetchCredits = async () => {
             if (!user?.primaryEmailAddress?.emailAddress) {
@@ -66,10 +64,10 @@ function Sidebar() {
                 }
 
                 const data = await response.json();
-                setUserCredits(data.credits); // Set the fetched credits
+                setUserCredits(data.credits);
             } catch (error) {
                 console.error("Error fetching credits:", error);
-                setUserCredits(5); // Default fallback value
+                setUserCredits(5);
             }
         };
 
@@ -87,7 +85,7 @@ function Sidebar() {
                 {Menu.map((item, index) => (
                     <FeatureMotionWrapper key={item.id} index={index}>
                         <Link href={item.path}>
-                            <div className={`flex items-center p-2 gap-2 text-white hover:bg-indigo-500 cursor-pointer hover:text-teal-500  rounded-lg ${item.path == path && 'bg-indigo-600'}`}>
+                            <div className={`flex items-center p-2 gap-2 text-white hover:bg-indigo-500 cursor-pointer hover:text-teal-500 rounded-lg ${item.path == path && 'bg-indigo-600'}`}>
                                 <div className="mr-2 text-white text-3xl hover:text-teal-500">{item.icon}</div>
                                 <h2>{item.name}</h2>
                             </div>
@@ -95,20 +93,39 @@ function Sidebar() {
                     </FeatureMotionWrapper>
                 ))}
             </ul>
-            <div className='absolute bottom-10 w-[80%]'>
-                <h2 className='text-yellow-300 text-lg my-2 text-center'>{createdCourses} Courses Created</h2>
+            <div className='absolute bottom-10 w-[80%] flex flex-col items-center'>
 
 
-                <Link href={'/dashboard/upgrade'}>
-                    <h2 className='text-yellow-300 text-xs my-2 text-center border border-indigo-500 rounded-lg p-1'>Upgrade Your Plan For Unlimited Course Creations</h2>
-                </Link>
 
-                {/* Display user credits */}
-                <div className="credits-display mt-4">
-                    <p className="text-yellow-300 rounded-lg text-sm shadow-neon text-center">Available Credits: {userCredits}</p>
-                    <h2 className='text-yellow-300 text-sm my-2 text-center'> (1 Course per Token)</h2>
+
+                {/* Credits Display with Coin */}
+                <div className="credits-display mt-4 flex flex-col items-center">
+                    <div className="mb-2">
+                        <Image
+                            src="/coin.png"
+                            alt="token"
+                            width={50}
+                            height={50}
+                            className="animate-pulse"
+                        />
+                    </div>
+                    <p className="text-yellow-300 border border-purple-500 rounded-lg p-2 my-2 text-lg shadow-neon text-center">
+                        Available Credits: {userCredits}
+                    </p>
+
                 </div>
+                <h2 className='text-yellow-300 text-xs text-center'>
+                    (1 Course per Token)
+                </h2>
+                <Link href={'/dashboard/upgrade'} className="w-full">
+
+                </Link>
+                <h2 className='text-yellow-300 text-sm p-2 my-2 text-center border border-purple-500 shadow-neon rounded-lg'>{createdCourses} <span className='text--500'>Courses Created</span> </h2>
+                <h2 className='text-indigo-500 text-xs my-2 text-center border border-indigo-500 rounded-lg p-1 hover:scale-105 transition-all mt-10 cursor-pointer'>
+                    Upgrade Your Plan For Unlimited Course Creations
+                </h2>
             </div>
+
         </div>
     )
 }

@@ -1,70 +1,132 @@
-"use client";
-
+"use client"
+import React from 'react';
 import { db } from '@/configs/db';
 import { CourseList } from '@/configs/schema';
 import { useUser } from '@clerk/nextjs';
 import { and, eq } from 'drizzle-orm';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
 import CourseBasicInfo from '../_components/CourseBasicInfo';
-import { HiClipboardDocumentCheck } from "react-icons/hi2";
-import { FacebookShareButton, TwitterShareButton, WhatsappShareButton, LinkedinShareButton } from 'react-share';
-import { FaFacebook, FaTwitter, FaWhatsapp, FaLinkedin } from "react-icons/fa";
+import { ClipboardCheck } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-function FinishScreen({ params }) {
+const ShareScreen = ({ params }) => {
     const { user } = useUser();
-    const [course, setCourse] = useState(null);
-
+    const [course, setCourse] = React.useState(null);
     const router = useRouter();
 
-    useEffect(() => {
-        if (params) GetCourse();
+    React.useEffect(() => {
+        if (params) getCourse();
     }, [params, user]);
 
-    const GetCourse = async () => {
+    const getCourse = async () => {
+        if (!user?.primaryEmailAddress?.emailAddress) return;
+
         const result = await db.select().from(CourseList)
             .where(and(
                 eq(CourseList.courseId, params?.courseId),
-                eq(CourseList?.createdBy, user?.primaryEmailAddress?.emailAddress)
+                eq(CourseList.createdBy, user.primaryEmailAddress.emailAddress)
             ));
 
         setCourse(result[0]);
-        console.log("RESULT:", result);
     };
 
-    if (!course) return <p>Loading...</p>;
+    if (!course) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-lg">Loading...</p>
+            </div>
+        );
+    }
 
-    const courseUrl = `${process.env.NEXT_PUBLIC_URL}/course-copy/view/${course.courseId}`;
+    // Updated URL to point to the full course view/learning interface
+    const courseUrl = `${process.env.NEXT_PUBLIC_URL}/course/${course.courseId}`;
+
+    const handleCopyUrl = async () => {
+        try {
+            await navigator.clipboard.writeText(courseUrl);
+            alert("Course URL copied to clipboard!");
+        } catch (err) {
+            alert("Failed to copy URL. Please try again.");
+        }
+    };
+
+    const handleShare = (platform) => {
+        const shareText = `Start learning ${course.courseOutput.CourseName}`;
+        const shareUrls = {
+            facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(courseUrl)}`,
+            twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(courseUrl)}&text=${encodeURIComponent(shareText)}`,
+            linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(courseUrl)}`,
+            whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${courseUrl}`)}`
+        };
+
+        window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+    };
 
     return (
-        <div className='px-10 md:px-20 lg:px-44 my-7'>
-            <h2 className='text-center font-bold text-2xl text-indigo-500 my-3'>Congrats! Your Course Is Ready</h2>
+        <div className="container mx-auto px-4 py-4 max-w-4xl">
+            <Card className="gradient-background2">
+                <CardHeader>
+                    <CardTitle className="text-4xl text-center gradient-title">
+                        Congratulations! Your Course Is Ready to Share
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <CourseBasicInfo course={course} />
 
-            <CourseBasicInfo course={course} refreshData={() => console.log()} />
+                    <Alert>
+                        <AlertDescription className="flex items-center justify-between">
+                            <span className="text-sm  break-all">{courseUrl}</span>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={handleCopyUrl}
+                                className="ml-2"
+                            >
+                                <ClipboardCheck className="h-4 w-4" />
+                            </Button>
+                        </AlertDescription>
+                    </Alert>
 
-            <h2 className='mt-3 text-yellow-400'>Course URL:</h2>
-            <h2 className='gradient-title text-center border-2 border-teal-500 p-2 rounded-lg flex gap-5 items-center '>
-                {courseUrl}
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <Button
+                            variant="outline"
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                            onClick={() => handleShare('facebook')}
+                        >
+                            Share on Facebook
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className="bg-sky-500 hover:bg-sky-600 text-white"
+                            onClick={() => handleShare('twitter')}
+                        >
+                            Share on Twitter
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className="bg-blue-700 hover:bg-blue-800 text-white"
+                            onClick={() => handleShare('linkedin')}
+                        >
+                            Share on LinkedIn
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className="bg-green-500 hover:bg-green-600 text-white"
+                            onClick={() => handleShare('whatsapp')}
+                        >
+                            Share on WhatsApp
+                        </Button>
+                    </div>
 
-                {/* Copy to Clipboard Button */}
-                <HiClipboardDocumentCheck
-                    className='text-yellow-500 h-10 w-10 cursor-pointer'
-                    onClick={async () => {
-                        await navigator.clipboard.writeText(courseUrl);
-                        alert("Course URL copied!");
-                    }}
-                />
-            </h2>
-
-            {/* Social Share Buttons */}
-            <div className="flex gap-4 mt-4">
-                <FacebookShareButton url={courseUrl}><FaFacebook className="text-blue-600 h-8 w-8 cursor-pointer" /></FacebookShareButton>
-                <TwitterShareButton url={courseUrl}><FaTwitter className="text-blue-400 h-8 w-8 cursor-pointer" /></TwitterShareButton>
-                <WhatsappShareButton url={courseUrl}><FaWhatsapp className="text-green-500 h-8 w-8 cursor-pointer" /></WhatsappShareButton>
-                <LinkedinShareButton url={courseUrl}><FaLinkedin className="text-blue-700 h-8 w-8 cursor-pointer" /></LinkedinShareButton>
-            </div>
+                    <div className="text-center text-sm text-gray-500 mt-4">
+                        Students will be taken directly to the full course interface when they click the link
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
-}
+};
 
-export default FinishScreen;
+export default ShareScreen;

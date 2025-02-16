@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { IoIosHome } from "react-icons/io";
 import { MdAutoFixHigh } from "react-icons/md";
 import { GiLightningShield } from "react-icons/gi";
@@ -21,12 +21,46 @@ const Menu = [
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [userCredits, setUserCredits] = useState(5);
     const path = usePathname();
     const { userCourseList } = useContext(UserCourseListContext);
+    const { user } = useUser();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
+
+    useEffect(() => {
+        const fetchCredits = async () => {
+            if (!user?.primaryEmailAddress?.emailAddress) {
+                console.log("No email address found for user");
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/user/credits", {
+                    headers: {
+                        email: user.primaryEmailAddress.emailAddress,
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error("Failed to fetch credits, status:", response.status);
+                    throw new Error("Failed to fetch credits");
+                }
+
+                const data = await response.json();
+                setUserCredits(data.credits);
+            } catch (error) {
+                console.error("Error fetching credits:", error);
+                setUserCredits(5);
+            }
+        };
+
+        if (user) {
+            fetchCredits();
+        }
+    }, [user]);
 
     return (
         <div className="relative p-5 bg-gradient-to-br from-indigo-800 to-purple-600 shadow-md flex justify-between items-center">
@@ -81,14 +115,32 @@ function Header() {
                         </li>
                     ))}
                 </ul>
-                {/* Course Progress Section */}
-                <div className="mt-10">
-                    <Progress value={((userCourseList?.length || 0) / 5) * 100} />
-                    <h2 className="text-yellow-300 text-sm my-2">{userCourseList?.length || 0} Out Of 5 Courses Created</h2>
-                    <Link href={'/dashboard/upgrade'}>
-                        <h2 className="text-yellow-300 text-xs my-2 text-center border border-indigo-500 rounded-lg p-1">Upgrade Your Plan For Unlimited Course Creations</h2>
+                {/* Credits Display Section */}
+                <div className="mt-10 flex flex-col items-center">
+                    <div className="mb-4">
+                        <Image
+                            src="/coin.png"
+                            alt="token"
+                            width={60}
+                            height={60}
+                            className="animate-pulse"
+                        />
+                    </div>
+                    <div className="credits-display w-full">
+                        <p className="text-yellow-300 rounded-lg p-2 text-sm shadow-neon text-center">
+                            Available Credits: {userCredits}
+                        </p>
+                        <h2 className="text-yellow-300 text-xs my-2 text-center">
+                            1 Course per Token
+                        </h2>
+                    </div>
+                    <Link href={'/dashboard/upgrade'} className="w-full">
+                        <h2 className="text-indigo-500 text-xs my-2 text-center border border-teal-500 rounded-lg p-1 gradient-background2 hover:scale-105 transition-all">
+                            Upgrade Your Plan For Unlimited Course Creations
+                        </h2>
                     </Link>
                 </div>
+
             </div>
         </div>
     );
