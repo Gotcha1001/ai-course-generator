@@ -18,7 +18,7 @@ function Hero() {
                             visible: { opacity: 1, y: 0 },
                         }}
                     >
-                        <div className="flex justify-center">
+                        <div className="flex justify-center mb-7">
                             <Image className='horizontal-rotate rounded-lg' src={'/hero.jpg'} alt='hero' height={100} width={100} />
                         </div>
                     </MotionWrapperDelay>

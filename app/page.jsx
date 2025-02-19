@@ -2,6 +2,9 @@
 import MotionWrapperDelay from "./_components/FramerMotionStuff/MotionWrapperDelay";
 import Header from "./_components/NormalComponents/Header";
 import Hero from "./_components/NormalComponents/Hero";
+import CourseCarouselHome from '@/app/dashboard/_components/CourseCarouselHome'
+import FeatureCard from "./dashboard/_components/HomePage/FeatureCard";
+import Questions from "./dashboard/_components/HomePage/Questions";
 
 
 export default function Home() {
@@ -23,6 +26,14 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero />
+
+      <CourseCarouselHome />
+
+      <FeatureCard />
+
+      <Questions />
+
+
     </div>
   )
 }
