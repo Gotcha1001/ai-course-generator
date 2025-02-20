@@ -4,7 +4,7 @@ import { db } from '@/configs/db'
 import { Chapters, CourseList } from '@/configs/schema'
 import { and, eq } from 'drizzle-orm'
 import React, { useEffect, useState } from 'react'
-import { Menu, Share2, ClipboardCheck } from 'lucide-react' // Added Share2 and ClipboardCheck icons
+import { Menu, Share2, ClipboardCheck } from 'lucide-react'
 import ChapterListCard from './_components/ChapterListCard'
 import ChapterContent from './_components/ChapterContent'
 import { Button } from "@/components/ui/button"
@@ -20,6 +20,12 @@ function CourseStart({ params }) {
     useEffect(() => {
         GetCourse()
     }, [])
+
+    useEffect(() => {
+        if (chapterContent) {
+            window.scrollTo(0, 0)
+        }
+    }, [chapterContent])
 
     const GetCourse = async () => {
         const result = await db.select().from(CourseList)
@@ -91,8 +97,19 @@ function CourseStart({ params }) {
 
             {/* Desktop Chapter List Side Bar */}
             <div className='fixed md:w-64 hidden md:block h-screen gradient-background2 shadow-teal'>
-                <div className="flex justify-between items-center bg-gradient-to-r from-purple-900 via-indigo-800 to-indigo-900 p-4">
-                    <h2 className="font-medium text-lg text-white">
+                <style jsx global>{`
+                    .hide-scrollbar {
+                        -ms-overflow-style: none;  /* IE and Edge */
+                        scrollbar-width: none;     /* Firefox */
+                    }
+                    .hide-scrollbar::-webkit-scrollbar {
+                        display: none;             /* Chrome, Safari, Opera */
+                    }
+                `}</style>
+
+                {/* Fixed Header */}
+                <div className="bg-gradient-to-r from-purple-900 via-indigo-800 to-indigo-900 p-4 flex justify-between items-center">
+                    <h2 className="font-medium text-lg text-white truncate">
                         {course?.courseOutput?.CourseName}
                     </h2>
                     <Button
@@ -105,7 +122,8 @@ function CourseStart({ params }) {
                     </Button>
                 </div>
 
-                <div>
+                {/* Scrollable Chapter List with Hidden Scrollbar */}
+                <div className="h-[calc(100vh-64px)] overflow-y-auto hide-scrollbar">
                     {course?.courseOutput?.Chapters.map((chapter, index) => (
                         <FeatureMotionWrapper key={index} index={index}>
                             <div
